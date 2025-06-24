@@ -1,0 +1,446 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Resetting styles to ensure full-screen */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Make sure body takes up full height */
+    overflow: hidden; /* Prevent scrollbars */
+}
+
+/* Allow scrolling on mobile devices */
+@media (max-width: 768px) {
+    html, body {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto; /* Allow vertical scrolling on mobile */
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+    }
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh; /* Ensure body covers the full height */
+    color: white;
+    display: flex; /* Use flexbox to control vertical alignment */
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: flex-start; /* Align content to the top */
+    padding-top: 80px; /* Add padding to the top of the body */
+}
+
+/* Mobile body adjustments */
+@media (max-width: 768px) {
+    body {
+        min-height: 100vh;
+        padding-top: 60px; /* Reduce top padding on mobile */
+        padding-bottom: 20px; /* Add bottom padding for mobile */
+    }
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100%; /* Ensure container takes up full height */
+    flex: 1; /* Allow container to grow and shrink */
+}
+
+/* Mobile container adjustments */
+@media (max-width: 768px) {
+    .container {
+        width: 100%; /* Make container full-width on smaller screens */
+        padding: 10px; /* Reduce padding on smaller screens */
+        margin: 0; /* Remove margins */
+        height: auto; /* Allow height to adjust to content on mobile */
+        min-height: calc(100vh - 80px); /* Ensure minimum height minus top padding */
+        flex: none; /* Remove flex behavior on mobile */
+    }
+}
+
+header {
+    text-align: center; /* Center the header content */
+    padding: 0 20px; /* Add horizontal padding */
+}
+
+header h1 {
+    font-size: 3rem; /* Initial font size */
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    color: #00d4ff;
+    text-align: center; /* Center the title */
+}
+
+header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    text-align: center; /* Center the subtitle */
+}
+
+/* Mobile header adjustments to avoid back button overlap */
+@media (max-width: 768px) {
+    header {
+        margin-top: 20px; /* Add top margin to avoid back button overlap */
+        padding: 0 80px; /* Add horizontal padding to avoid button overlap */
+        text-align: center;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+    }
+    
+    header p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        margin-top: 30px; /* Increase top margin on smaller screens */
+        padding: 0 60px; /* Reduce horizontal padding */
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        margin-top: 35px;
+        padding: 0 50px;
+    }
+    
+    .back-button-container {
+        top: 15px; /* Adjust back button position on very small screens */
+        left: 15px;
+    }
+    
+    .back-button {
+        padding: 8px 15px; /* Smaller back button on mobile */
+        font-size: 0.9rem;
+    }
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+.score-board {
+    display: flex;
+    justify-content: space-between;
+    background:#77A8BB;
+    padding: 15px 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.score, .question-counter {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.mission-button {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.btn-mission {
+    background: linear-gradient(45deg, #00d4ff, #0099cc);
+    color: white;
+    border: none;
+    padding: 20px 40px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,212,255,0.3);
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.btn-mission:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,212,255,0.4);
+    background: linear-gradient(45deg, #0099cc, #00d4ff);
+}
+
+.quiz-container {
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.question-card h2 {
+    font-size: 1.4rem;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.answers {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.answer-btn {
+    background: #FFF7E1;
+    color: rgb(0, 0, 0);
+    border: 2px solid rgba(255,255,255,0.3);
+    padding: 15px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.answer-btn:hover {
+    background: #FED8C1; 
+    border-color: rgba(255,255,255,0.5);
+}
+
+.answer-btn.correct {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    border-color: #4CAF50;
+}
+
+.answer-btn.incorrect {
+    background: linear-gradient(45deg, #f44336b5, #da190b);
+    border-color: #f44336;
+}
+
+.answer-btn.disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.feedback {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+.feedback.correct {
+    background: rgba(76, 175, 80, 0.2);
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+}
+
+.feedback.incorrect {
+    background: rgba(244, 67, 54, 0.2);
+    border: 2px solid #f44336;
+    color: #f44336;
+}
+
+.btn-next {
+    background: linear-gradient(45deg, #00d4ff, #0099cc);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: block;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+}
+
+.btn-next:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,212,255,0.3);
+}
+
+.result-screen {
+    text-align: center;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+}
+
+.result-screen h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.result-screen p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.btn-play-again {
+    background: linear-gradient(45deg, #00d4ff, #0099cc);
+    color: white;
+    border: none;
+    padding: 15px 35px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-play-again:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,212,255,0.3);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.back-button-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.back-button {
+    background: linear-gradient(45deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+    background: linear-gradient(45deg, #dc2626, #ef4444);
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .score-board {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .quiz-container {
+        padding: 20px;
+        margin-bottom: 20px; /* Add bottom margin for mobile spacing */
+    }
+    
+    .question-card h2 {
+        font-size: 1.2rem;
+    }
+    
+    /* Ensure proper spacing for next button on mobile */
+    .btn-next {
+        margin: 20px auto;
+        padding: 15px 35px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Additional mobile responsive styles for better scrolling */
+@media (max-width: 600px) {
+    .container {
+        padding: 5px !important;
+        margin: 5px auto !important;
+        max-width: 98vw !important;
+    }
+    
+    header h1 {
+        font-size: 1.8rem !important;
+        margin-bottom: 15px;
+    }
+    
+    .quiz-container {
+        padding: 15px !important;
+        margin-bottom: 30px !important;
+    }
+    
+    .question-card h2 {
+        font-size: 1.1rem !important;
+        margin-bottom: 20px;
+    }
+    
+    .answer-btn {
+        padding: 12px 15px !important;
+        font-size: 0.95rem !important;
+        margin-bottom: 8px;
+    }
+    
+    .feedback {
+        margin: 15px 0 !important;
+        padding: 12px !important;
+        font-size: 0.95rem;
+    }
+    
+    .btn-next {
+        margin: 25px auto !important;
+        padding: 12px 25px !important;
+        font-size: 1rem !important;
+    }
+    
+    .score-board {
+        padding: 12px 20px !important;
+        margin-bottom: 20px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.6rem !important;
+    }
+    
+    .quiz-container {
+        padding: 12px !important;
+    }
+    
+    .question-card h2 {
+        font-size: 1rem !important;
+    }
+    
+    .answer-btn {
+        padding: 10px 12px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 320px) {
+    .container {
+        padding: 3px !important;
+    }
+    
+    header h1 {
+        font-size: 1.4rem !important;
+    }
+    
+    .quiz-container {
+        padding: 10px !important;
+    }
+    
+    .question-card h2 {
+        font-size: 0.95rem !important;
+    }
+    
+    .answer-btn {
+        padding: 8px 10px !important;
+        font-size: 0.85rem !important;
+    }
+}

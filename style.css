@@ -1,0 +1,371 @@
+.hidden { display: none !important; }
+
+/* Splash Screen */
+#splash-screen {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: #95d8ffb7;
+  background-image: url('../assets/images/charity-water-splash.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+
+.splash-content {
+  background: transparent;
+  box-sizing: edge;
+  box-shadow: 0 25px 20px rgba(0,0,0,0.12);
+  padding: 2rem;
+  text-align: center;
+  max-width: 700px;
+  
+}
+.logo { max-width: 180px; margin-bottom: 1rem; }
+.fun-fact {
+  opacity: 75%;
+  color: #222;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1.2rem 0;
+ 
+}
+.fun-fact h3 {
+  color: #cdff1a;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 1px 4px 8px rgba(0,0,0,0.10);
+  padding: 0.3em 0.7em;
+  border-radius: 6px;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+.fun-fact p {
+  color: #cff02d;
+}
+#enter-button {
+  background: #00a2ff;
+  color: #bff248;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  position: center;
+}
+#enter-button:hover { background: #ffffff; color:black}
+
+
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+.splash-title {
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 4px 12px rgba(0,0,0,0.25);
+  margin-bottom: 0.5em;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.1;
+  padding: 0 0.5em;
+}
+
+.splash-subtitle {
+  font-size: clamp(1.1rem, 4vw, 2rem);
+  color: #fff;
+  margin-bottom: 1.5em;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.2;
+  padding: 0.5em 1em;
+  background: rgba(0, 0, 0, 0.315);
+  border-radius: 0.5em;
+  display: inline-block;
+}
+
+/* Extra mobile tweaks */
+@media (max-width: 600px) {
+  .splash-title,
+  .splash-subtitle {
+    padding: 0 0.2em;
+    font-size: 1.1rem;
+    width: 100vw;
+    box-sizing: border-box;
+    margin-bottom: 0.5em;
+  }
+  .splash-title {
+    font-size: 1.5rem;
+  }
+  .splash-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 900px) {
+  #gameScreen {
+    flex-direction: column !important;
+  }
+  #menu {
+    flex-direction: row;
+    width: 100vw;
+    height: 56px;
+    min-width: 0;
+    min-height: 56px;
+    max-height: 56px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  #menu .menu-item {
+    flex: 1 1 0;
+    justify-content: center;
+    border-bottom: none;
+    border-right: 1px solid #eee;
+    border-radius: 0;
+    min-width: 0;
+    font-size: 1rem;
+    padding: 0.5em 0.2em;
+  }
+  #menu .menu-item:last-child {
+    border-right: none;
+  }
+  #gameArea {
+    padding: 0.5em !important;
+    font-size: 1rem !important;
+    margin-left: 0;
+    margin-top: 56px;
+  }
+}
+
+@media (max-width: 600px) {
+  #splash-screen,
+  #fun-fact-modal {
+    padding: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+
+  .splash-title,
+  .splash-subtitle {
+    font-size: 1.2rem !important;
+    padding: 0 0.2em;
+    width: 100vw;
+    box-sizing: border-box;
+    top: 5% !important;
+  }
+  .splash-content {
+    max-width: 98vw;
+    padding: 1em 0.5em;
+    font-size: 1rem;
+  }
+  #gameArea > div {
+    padding: 1em !important;
+    font-size: 1rem !important;
+  }
+  .mission-screen {
+    flex-direction: column !important;
+  }
+  .missions-image-side, .mission-content-side {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100vw !important;
+    min-height: 180px !important;
+  }
+  .missions-image-side img {
+    max-width: 90vw !important;
+    max-height: 180px !important;
+  }
+  .mission-content {
+    padding: 1em !important;
+    max-width: 98vw !important;
+  }
+  iframe {
+    min-height: 350px !important;
+    height: 60vh !important;
+  }
+}
+
+.cw-highlight {
+  font-style: italic;
+  text-decoration: underline;
+  font-weight: normal;
+}
+#fun-fact-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+#fun-fact-modal.hidden {
+  display: none;
+}
+.fun-fact-modal-content {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.18);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  text-align: center;
+  max-width: 340px;
+}
+.fun-fact-modal-content h3 {
+  color: #1AABFF;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 2px 3px 8px rgba(0,0,0,0.15);
+  background: #e0f7fa;
+  padding: 0.3em 0.7em;
+  border-radius: 6px;
+  display: inline-block;
+  letter-spacing: 1px;
+  opacity: 1 !important;
+}
+.fun-fact-modal-content p {
+  color: #000;
+  margin: 1em 0 1.5em 0;
+}
+
+/* Desktop: vertical menu, no margin on gameArea */
+#gameScreen {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+#menu {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 180px !important;
+  min-width: 120px;
+  height: 100vh;
+  position: relative;
+  z-index: 10;
+  gap: 1.5em; /* Add vertical space between buttons */
+  margin-top: 3em; /* Move menu items down */
+}
+
+#menu .menu-item {
+  width: 100%;
+  border-bottom: 1px solid #eee;
+  border-right: none;
+  justify-content: flex-start;
+  padding: 1.2em 1em; /* Increase vertical padding */
+  font-size: 1.1rem;
+}
+
+#menu .menu-item:last-child {
+  border-bottom: none;
+}
+
+/* Mobile: horizontal menu at top, content below */
+@media (max-width: 900px) {
+  #gameScreen {
+    flex-direction: column !important;
+    height: 100vh;
+  }
+  #menu {
+    flex-direction: row !important;
+    width: 100vw !important;
+    height: 56px !important;
+    min-width: 0;
+    min-height: 56px;
+    max-height: 56px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    margin-top: 0 !important;
+  }
+  #menu .menu-item {
+    flex: 1 1 0;
+    width: auto;
+    border-bottom: none;
+    border-right: 1px solid #eee;
+    justify-content: center;
+    padding: 1em 0.2em;
+  }
+  #menu .menu-item:last-child {
+    border-right: none;
+  }
+  #gameArea {
+    margin-top: 56px;
+    padding: 1em;
+  }
+}
+
+@media (max-width: 600px) {
+  .mission-content-side {
+    overflow-y: auto !important;
+    max-height: calc(100vh - 180px) !important; /* 180px = image min-height */
+    padding-bottom: 2em;
+    align-items: flex-start !important;
+  }
+  .mission-content {
+    max-width: 98vw !important;
+    width: 100%;
+    padding: 1em !important;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .mission-content .grid > div {
+    font-size: 1rem;
+    padding: 0.7em 0.5em;
+  }
+}
+
+/* Ensure the parent div fills the viewport */
+.collect-iframe-parent {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+/* Make iframe always fill the parent */
+.collect-iframe {
+  width: 100vw !important;
+  height: 100vh !important;
+  min-width: 100vw !important;
+  min-height: 100vh !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+  border: none;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: transparent;
+  z-index: 1;
+}
+
+/* Responsive: ensure on small screens it still fills the viewport */
+@media (max-width: 900px) {
+  .collect-iframe-parent,
+  .collect-iframe {
+    width: 100vw !important;
+    height: 100vh !important;
+    min-width: 100vw !important;
+    min-height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+  }
+}
