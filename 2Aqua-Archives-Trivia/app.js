@@ -1,9 +1,13 @@
 class WaterCrisisTrivia {
     constructor() {
         this.score = 0;
-        this.currentQuestion = 0;
-        this.selectedQuestions = [];
+        this.timeLeft = 30;
+        this.timer = null;
         this.isAnswered = false;
+        this.questionPool = [];
+        
+        // Add high score tracking
+        this.highScore = this.getHighScore();
         
         // Additional water crisis facts for "Did You Know?" popup
         this.didYouKnowFacts = [
@@ -33,9 +37,58 @@ class WaterCrisisTrivia {
             "Over 2 billion people live in countries experiencing high water stress.",
             "Improving water supply and sanitation could prevent 361,000 deaths of children under 5 each year."
         ];
+        fetch('../assets/Sound/win.wav')
+          .then(response => console.log('Win sound exists:', response.ok))
+          .catch(error => console.error('Error checking win sound:', error));
         
+        fetch('../assets/Sound/Lost.wav')
+          .then(response => console.log('Lost sound exists:', response.ok))
+          .catch(error => console.error('Error checking lost sound:', error));        
         this.initializeElements();
         this.bindEvents();
+        this.updateHighScoreDisplay();
+        
+        // Add debug console log for audio paths
+        console.log("Audio files should be located at:");
+        console.log("../assets/Sound/win.wav");
+        console.log("../assets/Sound/Lost.wav");
+        
+        // Check if Audio API is available
+        console.log("Audio API available:", typeof Audio !== 'undefined');
+    }
+    
+    // Get high score from localStorage
+    getHighScore() {
+        return parseInt(localStorage.getItem('waterTriviaHighScore') || 0);
+    }
+    
+    // Save high score to localStorage
+    saveHighScore(newScore) {
+        if (newScore > this.highScore) {
+            this.highScore = newScore;
+            localStorage.setItem('waterTriviaHighScore', this.highScore);
+            return true; // Return true if it's a new high score
+        }
+        return false; // Return false if not a new high score
+    }
+    
+    // Reset high score
+    resetHighScore() {
+        if (confirm('Are you sure you want to reset your high score?')) {
+            localStorage.removeItem('waterTriviaHighScore');
+            this.highScore = 0;
+            this.updateHighScoreDisplay();
+            alert('High score has been reset!');
+        }
+    }
+    
+    // Update high score display
+    updateHighScoreDisplay() {
+        // You'll need to add this element to your HTML
+        const highScoreElement = document.getElementById('high-score');
+        if (highScoreElement) {
+            highScoreElement.textContent = this.highScore;
+        }
     }
     
     initializeElements() {
@@ -45,9 +98,10 @@ class WaterCrisisTrivia {
         this.questionText = document.getElementById('question-text');
         this.answersContainer = document.getElementById('answers-container');
         this.feedback = document.getElementById('feedback');
-        this.nextButton = document.getElementById('next-question');
         this.scoreElement = document.getElementById('score');
-        this.questionNumber = document.getElementById('question-number');
+        this.highScoreElement = document.getElementById('high-score');
+        this.timerElement = document.getElementById('timer');
+        this.timerBar = document.getElementById('timer-bar');
         this.resultScreen = document.getElementById('result-screen');
         this.resultTitle = document.getElementById('result-title');
         this.resultMessage = document.getElementById('result-message');
@@ -56,14 +110,20 @@ class WaterCrisisTrivia {
     
     bindEvents() {
         this.startButton.addEventListener('click', () => this.startGame());
-        this.nextButton.addEventListener('click', () => this.nextQuestion());
         this.playAgainButton.addEventListener('click', () => this.resetGame());
+        
+        // Add event listener for reset high score button
+        const resetHighScoreBtn = document.getElementById('reset-high-score');
+        if (resetHighScoreBtn) {
+            resetHighScoreBtn.addEventListener('click', () => this.resetHighScore());
+        }
     }
     
     startGame() {
         this.score = 0;
-        this.currentQuestion = 0;
-        this.selectedQuestions = this.getRandomQuestions(10);
+        this.timeLeft = 30;
+        this.questionPool = [...questions]; // Assuming 'questions' is imported or defined elsewhere
+        this.shuffleQuestions();
         this.isAnswered = false;
         
         this.missionButton.classList.add('hidden');
@@ -71,43 +131,71 @@ class WaterCrisisTrivia {
         this.resultScreen.classList.add('hidden');
         
         this.updateScore();
-        this.showQuestion();
+        this.startTimer();
+        this.showNextQuestion();
     }
     
-    getRandomQuestions(count) {
-        const shuffled = [...questions].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
+    shuffleQuestions() {
+        // Fisher-Yates shuffle algorithm
+        for (let i = this.questionPool.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.questionPool[i], this.questionPool[j]] = [this.questionPool[j], this.questionPool[i]];
+        }
     }
     
-    showQuestion() {
-        if (this.currentQuestion >= this.selectedQuestions.length) {
-            this.showResults();
-            return;
+    startTimer() {
+        this.timerBar.style.width = '100%';
+        this.timerElement.textContent = this.timeLeft;
+        
+        clearInterval(this.timer);
+        this.timer = setInterval(() => {
+            this.timeLeft--;
+            this.timerElement.textContent = this.timeLeft;
+            
+            // Update timer bar
+            const percentage = (this.timeLeft / 30) * 100;
+            this.timerBar.style.width = `${percentage}%`;
+            
+            // Add warning effect when time is running low
+            if (this.timeLeft <= 10) {
+                this.timerBar.classList.add('timer-warning');
+            }
+            
+            if (this.timeLeft <= 0) {
+                clearInterval(this.timer);
+                this.endGame();
+            }
+        }, 1000);
+    }
+    
+    showNextQuestion() {
+        // If we've gone through all questions, shuffle and start over
+        if (this.questionPool.length === 0) {
+            this.questionPool = [...questions];
+            this.shuffleQuestions();
         }
         
-        const question = this.selectedQuestions[this.currentQuestion];
-        this.questionText.textContent = question.question;
-        this.questionNumber.textContent = this.currentQuestion + 1;
+        // Get the next question
+        const currentQuestion = this.questionPool.pop();
+        this.questionText.textContent = currentQuestion.question;
         
         this.answersContainer.innerHTML = '';
         this.feedback.classList.add('hidden');
-        this.nextButton.classList.add('hidden');
         this.isAnswered = false;
         
-        question.answers.forEach((answer, index) => {
+        currentQuestion.answers.forEach((answer, index) => {
             const button = document.createElement('button');
             button.textContent = answer;
             button.className = 'answer-btn';
-            button.addEventListener('click', () => this.selectAnswer(index));
+            button.addEventListener('click', () => this.selectAnswer(index, currentQuestion));
             this.answersContainer.appendChild(button);
         });
     }
     
-    selectAnswer(selectedIndex) {
+    selectAnswer(selectedIndex, question) {
         if (this.isAnswered) return;
         
         this.isAnswered = true;
-        const question = this.selectedQuestions[this.currentQuestion];
         const answerButtons = this.answersContainer.querySelectorAll('.answer-btn');
         
         answerButtons.forEach((button, index) => {
@@ -120,55 +208,189 @@ class WaterCrisisTrivia {
         });
         
         if (selectedIndex === question.correct) {
-            this.score++;
-            this.showFeedback(true, "Correct! Great job!");
+            this.score += 10; // Award 10 points per correct answer
+            this.showFeedback(true, "Correct! +10 points");
         } else {
             this.showFeedback(false, `Incorrect. The correct answer is: ${question.answers[question.correct]}`);
         }
         
         this.updateScore();
-        this.nextButton.classList.remove('hidden');
+        
+        // Show next question after a brief delay
+        setTimeout(() => {
+            if (this.timeLeft > 0) {
+                this.showNextQuestion();
+            }
+        }, 1000);
     }
     
     showFeedback(isCorrect, message) {
         this.feedback.textContent = message;
         this.feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
         this.feedback.classList.remove('hidden');
+        
+        // Hide feedback after a brief time
+        setTimeout(() => {
+            this.feedback.classList.add('hidden');
+        }, 900);
     }
     
     updateScore() {
         this.scoreElement.textContent = this.score;
     }
     
-    nextQuestion() {
-        this.currentQuestion++;
-        this.showQuestion();
+    updateHighScoreDisplay() {
+        if (this.highScoreElement) {
+            this.highScoreElement.textContent = this.highScore;
+        }
     }
     
-    showResults() {
+    playWinSound() {
+        try {
+            const winSound = new Audio('...assets/Sound/win.wav'); // Adjust path as needed
+            winSound.volume = 1;
+            winSound.play().catch(error => {
+                console.log('Error playing win sound, using fallback:', error);
+                this.playFallbackSound('win');
+            });
+        } catch (error) {
+            console.log('Error creating Audio object, using fallback:', error);
+            this.playFallbackSound('win');
+        }
+    }
+    
+    playLostSound() {
+        // Try multiple possible paths
+        const paths = [
+            '../assets/Sound/Lost.wav',       // Original path
+            '../assets/Sound/lost.wav',       // Lowercase filename
+            '../assets/sound/Lost.wav',       // Lowercase folder
+            '../../assets/Sound/Lost.wav',    // One level up
+            '/assets/Sound/Lost.wav',         // Absolute path
+            './assets/Sound/Lost.wav'         // Local path
+        ];
+        
+        this.playAudioWithFallback(paths);
+    }
+    
+    // New helper method to try multiple paths
+    playAudioWithFallback(paths) {
+        // Log all paths we're trying
+        console.log("Attempting to play audio using these paths:", paths);
+        
+        // Try the first path
+        const tryPath = (index) => {
+            if (index >= paths.length) {
+                console.error("All audio paths failed to load");
+                return;
+            }
+            
+            const audio = new Audio(paths[index]);
+            audio.volume = 1;
+            
+            // Add event listeners to track success or failure
+            audio.addEventListener('canplaythrough', () => {
+                console.log(`Successfully loaded audio: ${paths[index]}`);
+                audio.play();
+            });
+            
+            audio.addEventListener('error', () => {
+                console.log(`Failed to load audio: ${paths[index]}, trying next path...`);
+                tryPath(index + 1);
+            });
+            
+            // Start loading the audio
+            audio.load();
+        };
+        
+        tryPath(0);
+    }
+    
+    // Add this method to your class
+    playFallbackSound(type) {
+        try {
+            // Create oscillator for basic sounds
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            if (type === 'win') {
+                // Happy sound
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // A5
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.2);
+                
+                setTimeout(() => {
+                    const osc2 = audioCtx.createOscillator();
+                    osc2.connect(gainNode);
+                    osc2.frequency.setValueAtTime(1320, audioCtx.currentTime); // E6
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 0.2);
+                }, 200);
+            } else {
+                // Sad sound
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(440, audioCtx.currentTime); // A4
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.2);
+                
+                setTimeout(() => {
+                    const osc2 = audioCtx.createOscillator();
+                    osc2.connect(gainNode);
+                    osc2.frequency.setValueAtTime(349.23, audioCtx.currentTime); // F4
+                    osc2.start();
+                    osc2.stop(audioCtx.currentTime + 0.3);
+                }, 200);
+            }
+            
+            console.log(`Playing fallback ${type} sound`);
+        } catch (e) {
+            console.error("Failed to play fallback sound:", e);
+        }
+    }
+    
+    endGame() {
+        clearInterval(this.timer);
         this.quizContainer.classList.add('hidden');
         this.resultScreen.classList.remove('hidden');
         
-        if (this.score === 10) {
-            this.resultTitle.textContent = "🎉 Mission Accomplished! 🎉";
+        // Store the current high score before updating
+        const previousHighScore = this.highScore;
+        
+        // Check if this is a new high score
+        const isNewHighScore = this.saveHighScore(this.score);
+        this.updateHighScoreDisplay();
+        
+        // Play appropriate sound based on high score comparison
+        if (isNewHighScore) {
+            console.log("Playing win sound for new high score");
+            this.playWinSound(); // Play win sound for new high score
+            
+            this.resultTitle.textContent = "🎉 New High Score! 🎉";
             this.resultTitle.style.color = "#4CAF50";
             this.resultMessage.innerHTML = `
-                Outstanding! You answered all 10 questions correctly!<br>
-                You're now a certified water crisis expert. Your knowledge can help spread awareness about this critical global issue.<br><br>
-                <strong>Remember:</strong> Every person deserves access to clean, safe water. Consider supporting charity: water's mission to bring clean water to everyone, everywhere.
+                Congratulations! You've set a new high score of ${this.score} points!<br>
+                Your knowledge about the water crisis is impressive. Keep up the great work!<br><br>
+                <strong>Challenge:</strong> Can you beat your own record? Try again!
             `;
-            // Play win sound for perfect score
-            this.playWinSound();
-        } else {
-            this.resultTitle.textContent = "Mission Incomplete";
+        } else if (previousHighScore > 0) { 
+            // Only play lost sound if there was a previous high score to beat
+            console.log("Playing lost sound - didn't beat high score");
+            this.playLostSound();
+            
+            this.resultTitle.textContent = "Time's Up!";
             this.resultTitle.style.color = "#f44336";
             this.resultMessage.innerHTML = `
-                You scored ${this.score}/10 correct answers.<br>
-                To complete the Aqua Archives mission, you need to answer all 10 questions correctly.<br><br>
-                Don't give up! Try again to learn more about the global water crisis and how we can help solve it.
+                You scored ${this.score} points.<br>
+                The highest score is ${this.highScore} points.<br><br>
+                Play again to improve your score and learn more about the global water crisis!
             `;
-            // Play lost sound for imperfect score
-            this.playLostSound();
         }
         
         // Show "Did You Know?" popup after a short delay
@@ -294,16 +516,6 @@ class WaterCrisisTrivia {
                 closeButton.click();
             }
         };
-    }
-    
-    resetGame() {
-        this.resultScreen.classList.add('hidden');
-        this.missionButton.classList.remove('hidden');
-        this.quizContainer.classList.add('hidden');
-        this.score = 0;
-        this.currentQuestion = 0;
-        this.updateScore();
-        this.questionNumber.textContent = '1';
     }
 }
 

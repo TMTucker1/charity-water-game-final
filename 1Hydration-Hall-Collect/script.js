@@ -11,17 +11,17 @@ let currentDifficulty = 'medium'; // Current difficulty level
 const difficultySettings = {
   easy: {
     time: 45,
-    spawnRate: 1000, // Spawn every 1 second (slower)
+    spawnRate: 800, // Spawn every 1 second (slower)
     name: 'Easy'
   },
   medium: {
     time: 30,
-    spawnRate: 800, // Spawn every 0.8 seconds
+    spawnRate: 600, // Spawn every 0.8 seconds
     name: 'Medium'
   },
   hard: {
     time: 20,
-    spawnRate: 600, // Spawn every 0.6 seconds (faster)
+    spawnRate: 400, // Spawn every 0.6 seconds (faster)
     name: 'Hard'
   }
 };
@@ -430,16 +430,16 @@ function endGame() {
 
 // Add sound functions for the Hydration Hall game
 function playWinSound() {
-  const winSound = new Audio('../assets/sounds/win.wav');
-  winSound.volume = 0.7;
+  const winSound = new Audio('../assets/Sound/win.wav');
+  winSound.volume = 1;
   winSound.play().catch(error => {
     console.log('Error playing win sound:', error);
   });
 }
 
 function playLostSound() {
-  const lostSound = new Audio('../assets/sounds/lost.wav');
-  lostSound.volume = 0.7;
+  const lostSound = new Audio('../assets/Sound/Lost.wav');
+  lostSound.volume = 1;
   lostSound.play().catch(error => {
     console.log('Error playing lost sound:', error);
   });
