@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelector('#fun-fact-modal p').textContent = fact;
 
       // 30 second countdown
-      let seconds = 10;
+      let seconds = 1;
       const timer = document.getElementById('fun-fact-timer');
       timer.textContent = `Continuing in ${seconds} seconds...`;
       const interval = setInterval(() => {
@@ -539,19 +539,12 @@ function launchMission(missionIndex) {
 function loadHydrationHallCollect() {
   const gameArea = document.getElementById('gameArea');
   gameArea.innerHTML = `
-    <div style="width: 100vw; height: 100vh; position: absolute;">
-      <div style="position: absolute; top: 10px; left: 100px; z-index: 100;">
-        <button onclick="returnToMissions()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-          ← Back to Missions
-        </button>
-      </div>
-      <div class="collect-iframe-parent">
-        <iframe 
-          src="1Hydration-Hall-Collect/index.html" 
-          class="collect-iframe"
-          title="Hydration Hall Collect Game">
-        </iframe>
-      </div>
+    <div class="collect-iframe-parent">
+      <iframe 
+        src="1Hydration-Hall-Collect/index.html" 
+        class="collect-iframe"
+        title="Hydration Hall Collect Game">
+      </iframe>
     </div>
   `;
 }
@@ -560,13 +553,8 @@ function loadHydrationHallCollect() {
 function loadAquaArchivesTrivia() {
   const gameArea = document.getElementById('gameArea');
 
-  // Load the trivia game in iframe with back button
+  // Load the trivia game in iframe without back button
   gameArea.innerHTML = `
-    <div style="position: absolute; top: 10px; left: 10px; z-index: 100;">
-      <button onclick="returnToMissions()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-        ← Back to Missions
-      </button>
-    </div>
     <div class="collect-iframe-parent">
       <iframe 
         src="2Aqua-Archives-Trivia/index.html" 
@@ -605,4 +593,21 @@ function returnToMissions() {
   if (missionsButton) {
     missionsButton.click();
   }
+}
+
+// Sound functions for game success/failure
+function playWinSound() {
+  const winSound = new Audio('assets/sounds/win.wav');
+  winSound.volume = 0.7;
+  winSound.play().catch(error => {
+    console.log('Error playing win sound:', error);
+  });
+}
+
+function playLostSound() {
+  const lostSound = new Audio('assets/sounds/lost.wav');
+  lostSound.volume = 0.7;
+  lostSound.play().catch(error => {
+    console.log('Error playing lost sound:', error);
+  });
 }

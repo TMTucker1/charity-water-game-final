@@ -1,10 +1,30 @@
 // Game configuration and state variables
-const GOAL_CANS = 20;        // Total items needed to collect (matching your HTML)
 let currentCans = 0;         // Current number of items collected
+let highestScore = 0;        // Highest score achieved in this session
 let gameActive = false;      // Tracks if game is currently running
 let spawnInterval;          // Holds the interval for spawning items
 let gameTimer;              // Holds the game timer interval
 let timeLeft = 30;          // Time left in seconds
+let currentDifficulty = 'medium'; // Current difficulty level
+
+// Difficulty settings
+const difficultySettings = {
+  easy: {
+    time: 45,
+    spawnRate: 1000, // Spawn every 1 second (slower)
+    name: 'Easy'
+  },
+  medium: {
+    time: 30,
+    spawnRate: 800, // Spawn every 0.8 seconds
+    name: 'Medium'
+  },
+  hard: {
+    time: 20,
+    spawnRate: 600, // Spawn every 0.6 seconds (faster)
+    name: 'Hard'
+  }
+};
 
 // Real Charity: Water success stories
 const successStories = [
@@ -30,7 +50,59 @@ const successStories = [
   }
 ];
 
-// ADD THIS MISSING FUNCTION
+// Function to update highest score with a loop check
+function updateHighestScore(newScore) {
+  // Use a loop to check if the new score is higher
+  for (let i = 0; i < 1; i++) { // Simple loop structure as requested
+    if (newScore > highestScore) {
+      highestScore = newScore;
+      // Show achievement for new high score
+      if (newScore > 0) {
+        showAchievement(`🏆 NEW HIGH SCORE: ${newScore} water cans! (${difficultySettings[currentDifficulty].name} Mode)`);
+      }
+      break; // Exit loop once comparison is made
+    }
+  }
+}
+
+// Handle difficulty button clicks
+function handleDifficultySelection() {
+  const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+  
+  if (difficultyButtons.length === 0) {
+    console.log('No difficulty buttons found!');
+    return;
+  }
+  
+  difficultyButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      if (gameActive) return; // Don't allow difficulty change during game
+      
+      // Remove active class from all buttons
+      difficultyButtons.forEach(btn => btn.classList.remove('active'));
+      
+      // Add active class to clicked button
+      button.classList.add('active');
+      
+      // Update current difficulty
+      currentDifficulty = button.dataset.level;
+      
+      // Update timer display
+      timeLeft = difficultySettings[currentDifficulty].time;
+      updateDisplay();
+      
+      // Show feedback
+      showAchievement(`Difficulty set to ${difficultySettings[currentDifficulty].name} mode!`);
+      setTimeout(() => {
+        const achievementDiv = document.getElementById('achievements');
+        if (achievementDiv) {
+          achievementDiv.style.display = 'none';
+        }
+      }, 2000);
+    });
+  });
+}
+
 function handleItemClick(event) {
   if (!gameActive) return;
   
@@ -47,11 +119,12 @@ function handleItemClick(event) {
       itemWrapper.remove();
     }
     
-    // Check if goal reached
-    if (currentCans >= GOAL_CANS) {
-      endGame();
+    // Check for milestone achievements (but don't end game)
+    if (currentCans === 20) {
       showSuccessStoryPopup();
-      showAchievement('🎉 Mission Complete! You collected all ' + GOAL_CANS + ' water cans!');
+      showAchievement('🎉 Amazing! You reached 20 water cans! Keep going for an even higher score!');
+    } else if (currentCans % 10 === 0 && currentCans > 20) {
+      showAchievement(`🌟 Outstanding! ${currentCans} water cans collected!`);
     }
   }
   
@@ -89,6 +162,7 @@ function createGrid() {
 // Update the display elements
 function updateDisplay() {
   document.getElementById('current-cans').textContent = currentCans;
+  document.getElementById('highest-score').textContent = highestScore;
   document.getElementById('timer').textContent = timeLeft;
 }
 
@@ -132,7 +206,7 @@ function showSuccessStoryPopup() {
            alt="Charity: Water" 
            style="max-width: 150px; height: auto;"
            onerror="this.style.display='none'">
-      <h2 style="color: #2E9DF7; margin: 10px 0; font-size: 24px;">Mission Accomplished!</h2>
+      <h2 style="color: #2E9DF7; margin: 10px 0; font-size: 24px;">Milestone Reached!</h2>
       <div style="background: #FFC907; color: #333; padding: 8px 16px; border-radius: 20px; display: inline-block; font-weight: bold; margin-bottom: 15px;">
         🏆 You collected ${currentCans} water cans!
       </div>
@@ -148,7 +222,7 @@ function showSuccessStoryPopup() {
     
     <div style="text-align: center;">
       <p style="font-size: 14px; color: #666; margin-bottom: 15px;">
-        Every game you play represents real impact happening around the world.
+        Keep playing to set an even higher score!
       </p>
       <button id="close-popup" style="
         background: #2E9DF7;
@@ -227,7 +301,7 @@ function startTimer() {
     
     if (timeLeft <= 0) {
       endGame();
-      showAchievement('Time\'s up! You collected ' + currentCans + ' water cans.');
+      showAchievement(`Time's up! Final Score: ${currentCans} water cans (${difficultySettings[currentDifficulty].name} Mode)`);
     }
   }, 1000);
 }
@@ -293,52 +367,8 @@ function startGame() {
   
   // Reset game state
   gameActive = true;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-updateDisplay();// Initialize displaydocument.getElementById('start-game').addEventListener('click', startGame);// Set up click handler for the start button}  document.getElementById('start-game').disabled = false;  document.getElementById('start-game').textContent = 'Start New Game';  // Reset button    grid.removeEventListener('click', handleItemClick);  const grid = document.querySelector('.game-grid');  // Remove click event listener    clearInterval(gameTimer); // Stop the timer  clearInterval(spawnInterval); // Stop spawning items  gameActive = false; // Mark the game as inactivefunction endGame() {}  document.getElementById('start-game').disabled = true;  document.getElementById('start-game').textContent = 'Game Running...';  // Change button text    startTimer();  spawnInterval = setInterval(spawnItem, 800); // Spawn items every 0.8 seconds (faster)  // Start spawning items faster and timer    grid.addEventListener('click', handleItemClick);  const grid = document.querySelector('.game-grid');  // Add click event listener to the grid for item clicks    createGrid();  // Set up the game grid    updateDisplay();  // Update display    document.getElementById('achievements').style.display = 'none';  // Clear achievements    timeLeft = 30;  currentCans = 0;  currentCans = 0;
-  timeLeft = 30;
+  currentCans = 0;
+  timeLeft = difficultySettings[currentDifficulty].time; // Set time based on difficulty
   
   // Clear achievements
   document.getElementById('achievements').style.display = 'none';
@@ -353,13 +383,17 @@ updateDisplay();// Initialize displaydocument.getElementById('start-game').addEv
   const grid = document.querySelector('.game-grid');
   grid.addEventListener('click', handleItemClick);
   
-  // Start spawning items faster and timer
-  spawnInterval = setInterval(spawnItem, 800); // Spawn items every 0.8 seconds (faster)
+  // Start spawning items based on difficulty and timer
+  spawnInterval = setInterval(spawnItem, difficultySettings[currentDifficulty].spawnRate);
   startTimer();
   
-  // Change button text
-  document.getElementById('start-game').textContent = 'Game Running...';
+  // Change button text and disable difficulty buttons
+  document.getElementById('start-game').textContent = `Game Running... (${difficultySettings[currentDifficulty].name})`;
   document.getElementById('start-game').disabled = true;
+  
+  // Disable difficulty buttons during game
+  const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+  difficultyButtons.forEach(btn => btn.disabled = true);
 }
 
 function endGame() {
@@ -367,17 +401,61 @@ function endGame() {
   clearInterval(spawnInterval); // Stop spawning items
   clearInterval(gameTimer); // Stop the timer
   
+  // Check if player beat their high score
+  if (currentCans > highestScore) {
+    // Play win sound when player beats high score
+    playWinSound();
+  } else if (highestScore > 0) {
+    // Play lost sound when player doesn't beat high score
+    // Only play if there was a previous high score
+    playLostSound();
+  }
+  
+  // Update highest score when game ends
+  updateHighestScore(currentCans);
+  updateDisplay();
+  
   // Remove click event listener
   const grid = document.querySelector('.game-grid');
   grid.removeEventListener('click', handleItemClick);
   
-  // Reset button
+  // Reset button and re-enable difficulty buttons
   document.getElementById('start-game').textContent = 'Start New Game';
   document.getElementById('start-game').disabled = false;
+  
+  // Re-enable difficulty buttons
+  const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+  difficultyButtons.forEach(btn => btn.disabled = false);
 }
+
+// Add sound functions for the Hydration Hall game
+function playWinSound() {
+  const winSound = new Audio('../assets/sounds/win.wav');
+  winSound.volume = 0.7;
+  winSound.play().catch(error => {
+    console.log('Error playing win sound:', error);
+  });
+}
+
+function playLostSound() {
+  const lostSound = new Audio('../assets/sounds/lost.wav');
+  lostSound.volume = 0.7;
+  lostSound.play().catch(error => {
+    console.log('Error playing lost sound:', error);
+  });
+}
+
+// Make sure to call handleDifficultySelection after DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Set up difficulty selection handlers
+  handleDifficultySelection();
+  
+  // Initialize display
+  updateDisplay();
+  
+  // Ensure the grid is created when the page loads
+  createGrid();
+});
 
 // Set up click handler for the start button
 document.getElementById('start-game').addEventListener('click', startGame);
-
-// Initialize display
-updateDisplay();
