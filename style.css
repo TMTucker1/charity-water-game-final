@@ -361,11 +361,11 @@
 @media (max-width: 900px) {
   .collect-iframe-parent,
   .collect-iframe {
-    width: 100vw !important;
+    width: 90vw !important;
     height: 100vh !important;
-    min-width: 100vw !important;
+    min-width: 90vw !important;
     min-height: 100vh !important;
-    max-width: 100vw !important;
+    max-width: 90vw !important;
     max-height: 100vh !important;
   }
 }
