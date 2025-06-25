@@ -361,15 +361,14 @@ button {
   }
   /* --- Start Button --- */
   button#start-game {
-    position: static !important;   /* Not fixed */
-    left: auto !important;
-    bottom: auto !important;
-    transform: none !important;
-    z-index: auto !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 16px auto 0 auto !important;
     width: 96vw !important;
     max-width: 340px !important;
-    min-width: 0 !important;
-    margin: 16px auto 0 auto !important; /* Space above, centered */
+    z-index: 99999 !important;
     padding: 16px 0 !important;
     font-size: 18px !important;
     font-weight: bold !important;
