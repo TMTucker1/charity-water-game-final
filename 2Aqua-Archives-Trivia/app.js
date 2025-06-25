@@ -229,10 +229,22 @@ class WaterCrisisTrivia {
         this.feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
         this.feedback.classList.remove('hidden');
         
-        // Hide feedback after a brief time
+        // Force visibility and positioning on mobile
+        if (window.innerWidth <= 768) {
+            this.feedback.style.display = 'block';
+            this.feedback.style.visibility = 'visible';
+            this.feedback.style.opacity = '1';
+            this.feedback.style.zIndex = '10000';
+        }
+        
+        // Hide feedback after a longer time on mobile for better readability
+        const hideDelay = window.innerWidth <= 768 ? 1500 : 900;
         setTimeout(() => {
             this.feedback.classList.add('hidden');
-        }, 900);
+            if (window.innerWidth <= 768) {
+                this.feedback.style.display = 'none';
+            }
+        }, hideDelay);
     }
     
     updateScore() {

@@ -387,9 +387,9 @@ function startGame() {
   spawnInterval = setInterval(spawnItem, difficultySettings[currentDifficulty].spawnRate);
   startTimer();
   
-  // Change button text and disable difficulty buttons
-  document.getElementById('start-game').textContent = `Game Running... (${difficultySettings[currentDifficulty].name})`;
-  document.getElementById('start-game').disabled = true;
+  // Hide the start button during gameplay
+  const startButton = document.getElementById('start-game');
+  startButton.style.display = 'none';
   
   // Disable difficulty buttons during game
   const difficultyButtons = document.querySelectorAll('.difficulty-btn');
@@ -419,9 +419,11 @@ function endGame() {
   const grid = document.querySelector('.game-grid');
   grid.removeEventListener('click', handleItemClick);
   
-  // Reset button and re-enable difficulty buttons
-  document.getElementById('start-game').textContent = 'Start New Game';
-  document.getElementById('start-game').disabled = false;
+  // Show the start button again and reset its text
+  const startButton = document.getElementById('start-game');
+  startButton.style.display = 'block';
+  startButton.textContent = 'Start New Game';
+  startButton.disabled = false;
   
   // Re-enable difficulty buttons
   const difficultyButtons = document.querySelectorAll('.difficulty-btn');

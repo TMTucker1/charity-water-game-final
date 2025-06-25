@@ -1,0 +1,113 @@
+/* Add mobile-specific styles for feedback visibility */
+@media (max-width: 768px) {
+  .feedback {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 10000 !important;
+    background: rgba(0, 0, 0, 0.9) !important;
+    color: white !important;
+    padding: 20px 30px !important;
+    border-radius: 15px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+    min-width: 280px !important;
+    max-width: 90vw !important;
+    border: 3px solid transparent !important;
+  }
+  
+  .feedback.correct {
+    border-color: #4CAF50 !important;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.95), rgba(56, 142, 60, 0.95)) !important;
+  }
+  
+  .feedback.incorrect {
+    border-color: #f44336 !important;
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.95), rgba(198, 40, 40, 0.95)) !important;
+  }
+  
+  /* Ensure answer buttons are properly sized on mobile */
+  .answer-btn {
+    padding: 15px 20px !important;
+    font-size: 16px !important;
+    margin: 8px 0 !important;
+    min-height: 50px !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+  }
+  
+  .answer-btn.correct {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    border: 3px solid #45a049 !important;
+  }
+  
+  .answer-btn.incorrect {
+    background-color: #f44336 !important;
+    color: white !important;
+    border: 3px solid #d32f2f !important;
+  }
+  
+  /* Make quiz container more mobile-friendly */
+  #quiz-container {
+    padding: 10px !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+  
+  #question-text {
+    font-size: 18px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 20px !important;
+    padding: 15px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+  }
+  
+  #answers-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    margin-bottom: 20px !important;
+  }
+  
+  /* Timer bar visibility */
+  #timer-container {
+    margin-bottom: 20px !important;
+  }
+  
+  #timer-bar {
+    height: 8px !important;
+    border-radius: 4px !important;
+  }
+  
+  /* Score display */
+  .score-display {
+    font-size: 18px !important;
+    margin-bottom: 15px !important;
+    text-align: center !important;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .feedback {
+    font-size: 16px !important;
+    padding: 15px 20px !important;
+    min-width: 250px !important;
+  }
+  
+  .answer-btn {
+    padding: 12px 15px !important;
+    font-size: 14px !important;
+    min-height: 45px !important;
+  }
+  
+  #question-text {
+    font-size: 16px !important;
+    padding: 12px !important;
+  }
+}

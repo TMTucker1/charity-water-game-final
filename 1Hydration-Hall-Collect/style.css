@@ -301,7 +301,7 @@ button {
     height: auto !important;
     min-height: 100vh !important;
     overflow-y: auto !important;
-    padding-bottom: 20px !important; /* Reduced from 80px */
+    padding-bottom: 20px !important; /* Reduced since button will be hidden during game */
   }
   
   .left-panel {
@@ -311,13 +311,13 @@ button {
     width: 100% !important;
     padding: 8px !important;
     background-color: rgba(255, 255, 255, 0.05);
-    margin-bottom: 2px !important; /* Reduced from 5px */
+    margin-bottom: 2px !important;
     height: auto !important;
   }
   
   .difficulty-selection h3 {
     font-size: 14px !important;
-    margin: 0 0 5px 0 !important; /* Reduced from 8px */
+    margin: 0 0 5px 0 !important;
   }
   
   .difficulty-buttons {
@@ -342,18 +342,18 @@ button {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    padding-bottom: 5px !important; /* Reduced from 20px */
+    padding-bottom: 5px !important;
   }
   
   .game-grid {
-    width: 75vw !important; /* Smaller grid */
-    height: 75vw !important; /* Make it square and smaller */
+    width: 75vw !important;
+    height: 75vw !important;
     max-width: 75vw !important;
     max-height: 75vw !important;
     min-width: 0 !important;
     min-height: 0 !important;
-    gap: 1.5vw !important; /* Smaller gaps */
-    margin: 5px auto 5px auto !important; /* Reduced margins */
+    gap: 1.5vw !important;
+    margin: 5px auto 5px auto !important;
   }
   
   .grid-cell {
@@ -363,49 +363,54 @@ button {
   }
   
   .item-wrapper {
-    width: 35px !important; /* Smaller items */
+    width: 35px !important;
     height: 35px !important;
   }
   
   h1 {
     font-size: 20px !important;
-    margin-bottom: 5px !important; /* Reduced from 8px */
+    margin-bottom: 5px !important;
   }
   
   .game-instructions {
     font-size: 13px !important;
-    margin-bottom: 5px !important; /* Reduced from 10px */
+    margin-bottom: 5px !important;
   }
   
   .stats {
-    padding: 6px 0 !important; /* Reduced from 8px */
-    margin-bottom: 5px !important; /* Reduced from 10px */
+    padding: 6px 0 !important;
+    margin-bottom: 5px !important;
   }
   
   .stats p {
     font-size: 13px !important;
   }
   
-  /* Fixed start button at bottom */
+  /* Fixed start button at bottom - only visible when game is not active */
   button#start-game {
     position: fixed !important;
     left: 50% !important;
-    bottom: 5px !important; /* Reduced from 15px */
+    bottom: 20px !important;
     transform: translateX(-50%) !important;
-    z-index: 1000 !important;
-    width: 85vw !important;
-    max-width: 300px !important;
+    z-index: 99999 !important;
+    width: 90vw !important;
+    max-width: 320px !important;
     margin: 0 !important;
-    padding: 12px 20px !important; /* Reduced padding */
-    font-size: 14px !important; /* Reduced font size */
+    padding: 18px 24px !important;
+    font-size: 18px !important;
     font-weight: bold !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
     background-color: #4CAF50 !important;
-    border-radius: 25px !important;
+    border: 3px solid #45a049 !important;
+    border-radius: 30px !important;
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+    display: block !important; /* Ensure it's visible by default */
   }
   
-  button#start-game:hover {
-    background-color: #45a049 !important;
+  /* When button is hidden during gameplay */
+  button#start-game[style*="display: none"] {
+    display: none !important;
   }
 }
 
