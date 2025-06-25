@@ -458,3 +458,26 @@ button {
     font-size: 14px !important;
   }
 }
+
+/* Add this to your style.css file */
+.game-result-popup {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure game grid doesn't interfere */
+.game-grid {
+  position: relative;
+  z-index: 1;
+}
+
+/* Popup button hover effects */
+.game-result-popup button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}

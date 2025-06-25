@@ -461,21 +461,207 @@ function endGame() {
   difficultyButtons.forEach(btn => btn.disabled = false);
 }
 
-// Add sound functions for the Hydration Hall game
+// Replace the existing sound functions with these enhanced versions:
+
 function playWinSound() {
+  // Play the sound
   const winSound = new Audio('../assets/Sound/win.wav');
   winSound.volume = 1;
   winSound.play().catch(error => {
     console.log('Error playing win sound:', error);
   });
+  
+  // Show win popup over the game
+  showGameResultPopup('win');
 }
 
 function playLostSound() {
+  // Play the sound
   const lostSound = new Audio('../assets/Sound/Lost.wav');
   lostSound.volume = 1;
   lostSound.play().catch(error => {
     console.log('Error playing lost sound:', error);
   });
+  
+  // Show lose popup over the game
+  showGameResultPopup('lose');
+}
+
+// New function to show win/lose popup over the game grid
+function showGameResultPopup(resultType) {
+  // Create popup overlay
+  const overlay = document.createElement('div');
+  overlay.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease-in;
+  `;
+  
+  // Create popup content
+  const popup = document.createElement('div');
+  popup.style.cssText = `
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 450px;
+    margin: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    animation: slideIn 0.4s ease-out;
+    position: relative;
+  `;
+  
+  // Different content based on win/lose
+  if (resultType === 'win') {
+    popup.innerHTML = `
+      <div style="font-size: 60px; margin-bottom: 20px;">🏆</div>
+      <h2 style="color: #4FCB53; margin: 0 0 15px 0; font-size: 28px;">NEW HIGH SCORE!</h2>
+      <div style="background: #4FCB53; color: white; padding: 12px 20px; border-radius: 25px; display: inline-block; font-weight: bold; margin-bottom: 20px; font-size: 18px;">
+        ${currentCans} Water Cans Collected!
+      </div>
+      <p style="color: #333; font-size: 16px; line-height: 1.5; margin-bottom: 25px;">
+        Congratulations! You've achieved a new personal best in <strong>${difficultySettings[currentDifficulty].name}</strong> mode!
+        <br>Your dedication is helping provide clean water to communities in need.
+      </p>
+      <button id="continue-playing" style="
+        background: #4FCB53;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-right: 10px;
+      ">Play Again</button>
+      <button id="change-difficulty" style="
+        background: #2E9DF7;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+      ">Change Difficulty</button>
+    `;
+  } else {
+    popup.innerHTML = `
+      <div style="font-size: 60px; margin-bottom: 20px;">⏰</div>
+      <h2 style="color: #F5402C; margin: 0 0 15px 0; font-size: 28px;">Time's Up!</h2>
+      <div style="background: #F5402C; color: white; padding: 12px 20px; border-radius: 25px; display: inline-block; font-weight: bold; margin-bottom: 20px; font-size: 18px;">
+        Final Score: ${currentCans} Water Cans
+      </div>
+      <p style="color: #333; font-size: 16px; line-height: 1.5; margin-bottom: 15px;">
+        Good effort in <strong>${difficultySettings[currentDifficulty].name}</strong> mode!
+        <br>Your best score is still <strong>${highestScore}</strong> water cans.
+      </p>
+      <p style="color: #666; font-size: 14px; margin-bottom: 25px;">
+        Keep trying to beat your high score and help more communities get clean water!
+      </p>
+      <button id="try-again" style="
+        background: #FFC907;
+        color: #333;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-right: 10px;
+      ">Try Again</button>
+      <button id="change-difficulty" style="
+        background: #2E9DF7;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+      ">Change Difficulty</button>
+    `;
+  }
+  
+  // Add animations
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideIn {
+      from { transform: scale(0.8) translateY(-30px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  overlay.appendChild(popup);
+  document.body.appendChild(overlay);
+  
+  // Add button event listeners
+  const continueBtn = popup.querySelector('#continue-playing') || popup.querySelector('#try-again');
+  const difficultyBtn = popup.querySelector('#change-difficulty');
+  
+  function closePopup() {
+    overlay.style.animation = 'fadeOut 0.3s ease-out forwards';
+    setTimeout(() => {
+      if (document.body.contains(overlay)) {
+        document.body.removeChild(overlay);
+      }
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
+      }
+    }, 300);
+  }
+  
+  if (continueBtn) {
+    continueBtn.onclick = function() {
+      closePopup();
+      // Automatically start a new game
+      setTimeout(() => {
+        startGame();
+      }, 300);
+    };
+  }
+  
+  if (difficultyBtn) {
+    difficultyBtn.onclick = function() {
+      closePopup();
+      // Just close and let player choose difficulty
+    };
+  }
+  
+  // Close on overlay click (but not popup content)
+  overlay.onclick = function(e) {
+    if (e.target === overlay) {
+      closePopup();
+    }
+  };
+  
+  // Auto-close after 10 seconds for better UX
+  setTimeout(() => {
+    if (document.body.contains(overlay)) {
+      closePopup();
+    }
+  }, 10000);
 }
 
 // Make sure ALL event listeners are inside DOMContentLoaded

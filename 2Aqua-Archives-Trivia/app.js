@@ -106,6 +106,20 @@ class WaterCrisisTrivia {
         this.resultTitle = document.getElementById('result-title');
         this.resultMessage = document.getElementById('result-message');
         this.playAgainButton = document.getElementById('play-again');
+        
+        // Check for missing elements
+        const requiredElements = {
+            'start-mission': this.startButton,
+            'quiz-container': this.quizContainer,
+            'result-screen': this.resultScreen,
+            'play-again': this.playAgainButton
+        };
+        
+        Object.entries(requiredElements).forEach(([name, element]) => {
+            if (!element) {
+                console.error(`Missing required element: ${name}`);
+            }
+        });
     }
     
     bindEvents() {
@@ -529,30 +543,17 @@ class WaterCrisisTrivia {
             }
         };
     }
-}   
+    
     resetGame() {
-// Initialize the game when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    new WaterCrisisTrivia();
-});     // Show mission button
+        this.resultScreen.classList.add('hidden');
         this.missionButton.classList.remove('hidden');
-        
-        // Hide quiz container
         this.quizContainer.classList.add('hidden');
-        
-        // Reset score and time
         this.score = 0;
         this.timeLeft = 30;
-        
-        // Update score display
         this.updateScore();
-        
-        // Reset timer display
         this.timerElement.textContent = this.timeLeft;
         this.timerBar.style.width = '100%';
         this.timerBar.classList.remove('timer-warning');
-        
-        console.log("Game reset - ready to play again");
     }
 }
 
