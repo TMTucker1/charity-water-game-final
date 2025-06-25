@@ -247,7 +247,7 @@ class WaterCrisisTrivia {
     
     playWinSound() {
         try {
-            const winSound = new Audio('...assets/Sound/win.wav'); // Adjust path as needed
+            const winSound = new Audio('..assets/Sound/win.wav'); // Adjust path as needed
             winSound.volume = 1;
             winSound.play().catch(error => {
                 console.log('Error playing win sound, using fallback:', error);
