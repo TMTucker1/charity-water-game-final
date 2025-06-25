@@ -311,13 +311,13 @@ button {
     width: 100% !important;
     padding: 8px !important;
     background-color: rgba(255, 255, 255, 0.05);
-    margin-bottom: 5px !important;
+    margin-bottom: 2px !important; /* Reduced from 5px */
     height: auto !important;
   }
   
   .difficulty-selection h3 {
     font-size: 14px !important;
-    margin: 0 0 8px 0 !important;
+    margin: 0 0 5px 0 !important; /* Reduced from 8px */
   }
   
   .difficulty-buttons {
@@ -342,7 +342,7 @@ button {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
-    padding-bottom: 20px !important;
+    padding-bottom: 5px !important; /* Reduced from 20px */
   }
   
   .game-grid {
@@ -353,7 +353,7 @@ button {
     min-width: 0 !important;
     min-height: 0 !important;
     gap: 1.5vw !important; /* Smaller gaps */
-    margin: 10px auto 20px auto !important;
+    margin: 5px auto 5px auto !important; /* Reduced margins */
   }
   
   .grid-cell {
@@ -369,17 +369,17 @@ button {
   
   h1 {
     font-size: 20px !important;
-    margin-bottom: 8px !important;
+    margin-bottom: 5px !important; /* Reduced from 8px */
   }
   
   .game-instructions {
     font-size: 13px !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 5px !important; /* Reduced from 10px */
   }
   
   .stats {
-    padding: 8px 0 !important;
-    margin-bottom: 10px !important;
+    padding: 6px 0 !important; /* Reduced from 8px */
+    margin-bottom: 5px !important; /* Reduced from 10px */
   }
   
   .stats p {
