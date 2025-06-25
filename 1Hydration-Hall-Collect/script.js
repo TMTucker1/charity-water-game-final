@@ -1,3 +1,9 @@
+// Add this at the beginning of your script
+window.addEventListener('error', function(e) {
+  console.log('JavaScript error occurred: ', e.message);
+  alert('A JavaScript error occurred: ' + e.message + ' at line ' + e.lineno);
+});
+
 // Game configuration and state variables
 let currentCans = 0;         // Current number of items collected
 let highestScore = 0;        // Highest score achieved in this session
@@ -447,17 +453,33 @@ function playLostSound() {
   });
 }
 
-// Make sure to call handleDifficultySelection after DOM is loaded
+// Make sure ALL event listeners are inside DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
-  // Set up difficulty selection handlers
-  handleDifficultySelection();
+  console.log("DOM fully loaded");
+  
+  // Check if elements exist
+  const startButton = document.getElementById('start-game');
+  const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+  
+  console.log("Start button found:", !!startButton);
+  console.log("Difficulty buttons found:", difficultyButtons.length);
+  
+  // Set up difficulty selection handlers  // Set up click handler for the start button
+  handleDifficultySelection();ventListener('click', startGame);
   
   // Initialize display
   updateDisplay();
   
   // Ensure the grid is created when the page loads
   createGrid();
+  
+  // IMPORTANT: Move the start button event listener here
+  if (startButton) {
+    startButton.addEventListener('click', function() {
+      console.log("Start button clicked");
+      startGame();
+    });
+  } else {
+    console.error("Start button not found! Check your HTML.");
+  }
 });
-
-// Set up click handler for the start button
-document.getElementById('start-game').addEventListener('click', startGame);
