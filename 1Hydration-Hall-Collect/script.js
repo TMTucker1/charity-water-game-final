@@ -93,18 +93,14 @@ function handleDifficultySelection() {
       // Update current difficulty
       currentDifficulty = button.dataset.level;
       
-      // Update timer display
+      // Update timer display based on difficulty
       timeLeft = difficultySettings[currentDifficulty].time;
+      
+      // Just update the display - NO popup
       updateDisplay();
       
-      // Show feedback
-      showAchievement(`Difficulty set to ${difficultySettings[currentDifficulty].name} mode!`);
-      setTimeout(() => {
-        const achievementDiv = document.getElementById('achievements');
-        if (achievementDiv) {
-          achievementDiv.style.display = 'none';
-        }
-      }, 2000);
+      // Optional: Log the change to console instead of showing popup
+      console.log(`Difficulty set to ${difficultySettings[currentDifficulty].name} mode (${timeLeft}s)`);
     });
   });
 }
@@ -167,9 +163,38 @@ function createGrid() {
 
 // Update the display elements
 function updateDisplay() {
-  document.getElementById('current-cans').textContent = currentCans;
-  document.getElementById('highest-score').textContent = highestScore;
-  document.getElementById('timer').textContent = timeLeft;
+  // Try common ID patterns and add null checks
+  const currentScoreEl = document.getElementById('current-cans') || 
+                        document.getElementById('current-score') ||
+                        document.querySelector('.current-score span') ||
+                        document.querySelector('[data-score="current"]');
+  
+  const highestScoreEl = document.getElementById('highest-score') || 
+                        document.getElementById('best-score') ||
+                        document.querySelector('.highest-score span') ||
+                        document.querySelector('[data-score="highest"]');
+  
+  const timerEl = document.getElementById('timer') || 
+                 document.getElementById('time-left') ||
+                 document.querySelector('.timer span') ||
+                 document.querySelector('[data-timer]');
+  
+  // Only update if elements exist
+  if (currentScoreEl) currentScoreEl.textContent = currentCans;
+  if (highestScoreEl) highestScoreEl.textContent = highestScore;
+  if (timerEl) timerEl.textContent = timeLeft;
+  
+  // Debug output
+  console.log("Display update:", {
+    currentCans,
+    highestScore, 
+    timeLeft,
+    elementsFound: {
+      current: !!currentScoreEl,
+      highest: !!highestScoreEl,
+      timer: !!timerEl
+    }
+  });
 }
 
 // Show Charity: Water success story popup
@@ -465,7 +490,7 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log("Difficulty buttons found:", difficultyButtons.length);
   
   // Set up difficulty selection handlers  // Set up click handler for the start button
-  handleDifficultySelection();ventListener('click', startGame);
+  handleDifficultySelection();
   
   // Initialize display
   updateDisplay();

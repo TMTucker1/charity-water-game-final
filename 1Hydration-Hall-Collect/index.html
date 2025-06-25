@@ -13,9 +13,9 @@
       <div class="difficulty-selection">
         <h3>Choose Difficulty:</h3>
         <div class="difficulty-buttons">
-          <button class="difficulty-btn" data-level="easy">Easy</button>
-          <button class="difficulty-btn active" data-level="medium">Medium</button>
-          <button class="difficulty-btn" data-level="hard">Hard</button>
+          <button class="difficulty-btn" data-level="easy">Easy (45s)</button>
+          <button class="difficulty-btn active" data-level="medium">Medium (30s)</button>
+          <button class="difficulty-btn" data-level="hard">Hard (20s)</button>
         </div>
       </div>
     </div>
@@ -35,7 +35,35 @@
       </div>
       <button id="start-game" class="game-button">Start Game</button>
     </div>
+
+    <!-- Achievements Section -->
+    <div id="achievements" style="display: none;"></div>
   </div>
   <script src="script.js"></script>
+  <script>
+    function updateDisplay() {
+      // Use the correct IDs from your HTML
+      const currentScoreEl = document.getElementById('current-score');
+      const highestScoreEl = document.getElementById('highest-score'); 
+      const timerEl = document.getElementById('time-left');
+      
+      // Update elements if they exist
+      if (currentScoreEl) currentScoreEl.textContent = currentCans;
+      if (highestScoreEl) highestScoreEl.textContent = highestScore;
+      if (timerEl) timerEl.textContent = timeLeft + 's';
+      
+      // Debug output
+      console.log("Display update:", {
+        currentCans,
+        highestScore, 
+        timeLeft,
+        elementsFound: {
+          current: !!currentScoreEl,
+          highest: !!highestScoreEl,
+          timer: !!timerEl
+        }
+      });
+    }
+  </script>
 </body>
 </html>

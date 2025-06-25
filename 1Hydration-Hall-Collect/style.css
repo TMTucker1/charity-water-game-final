@@ -154,6 +154,10 @@ h1 img {
   overflow: hidden;
   min-height: 70px;
   max-height: 80px;
+  width: 80px;
+  height: 80px;
+  background: #f0f8ff;
+  border: 2px solid #2E9DF7;
 }
 
 .item-wrapper {
