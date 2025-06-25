@@ -392,7 +392,7 @@ button {
   button#start-game {
     position: fixed !important;
     left: 50% !important;
-    bottom: 40px !important;
+    bottom: 24px !important;
     transform: translateX(-50%) !important;
     z-index: 99999 !important;
     width: 96vw !important;
