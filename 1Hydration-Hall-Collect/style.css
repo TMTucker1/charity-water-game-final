@@ -290,12 +290,18 @@ button {
 
 /* Responsive for mobile - move difficulty to top */
 @media (max-width: 768px) {
+  body {
+    overflow: auto !important;
+  }
+  
   .container {
     flex-direction: column !important;
-    padding: 10px !important;
-    gap: 10px !important; /* Reduced gap */
-    height: calc(100vh - 60px) !important; /* Account for menu height */
-    overflow-y: auto !important; /* Allow scrolling if needed */
+    padding: 5px !important;
+    gap: 5px !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+    padding-bottom: 80px !important; /* More space for fixed button */
   }
   
   .left-panel {
@@ -303,15 +309,14 @@ button {
     min-width: auto !important;
     max-width: none !important;
     width: 100% !important;
-    padding: 8px !important; /* Reduced padding */
+    padding: 8px !important;
     background-color: rgba(255, 255, 255, 0.05);
-    margin-bottom: 5px !important; /* Reduced margin */
-    margin-top: 65px !important; /* Add top margin to clear the menu */
-    z-index: 16; /* Ensure it's below the menu but visible */
+    margin-bottom: 5px !important;
+    height: auto !important;
   }
   
   .difficulty-selection h3 {
-    font-size: 14px !important; /* Smaller font */
+    font-size: 14px !important;
     margin: 0 0 8px 0 !important;
   }
   
@@ -333,125 +338,106 @@ button {
     width: 100% !important;
     order: 1;
     margin-top: 0 !important;
-    flex: 1 !important;
+    flex: none !important;
     display: flex !important;
     flex-direction: column !important;
-    justify-content: space-between !important; /* Distribute space evenly */
+    align-items: center !important;
+    padding-bottom: 20px !important;
   }
   
   .game-grid {
-    width: 90vw !important;
-    height: 50vh !important; /* Fixed height instead of square */
-    max-width: 90vw !important;
-    max-height: 50vh !important;
+    width: 75vw !important; /* Smaller grid */
+    height: 75vw !important; /* Make it square and smaller */
+    max-width: 75vw !important;
+    max-height: 75vw !important;
     min-width: 0 !important;
     min-height: 0 !important;
-    gap: 1.5vw !important;
-    margin: 10px auto !important; /* Center the grid */
+    gap: 1.5vw !important; /* Smaller gaps */
+    margin: 10px auto 20px auto !important;
   }
   
-  h1 {
-    font-size: 22px !important;
-    margin-bottom: 10px !important;
-  }
-  
-  .game-instructions {
-    font-size: 14px !important;
-    margin-bottom: 15px !important;
-  }
-  
-  .stats {
-    padding: 8px 0 !important;
-    margin-bottom: 15px !important;
-  }
-  
-  .stats p {
-    font-size: 14px !important;
-  }
-  
-  /* Make sure start button is visible */
-  button {
-    margin: 15px auto 20px !important;
-    padding: 10px 20px !important;
-    font-size: 14px !important;
-    position: relative !important;
-    z-index: 10 !important;
-  }
-}
-
-/* --- Responsive Fixes for Mobile Overlap & Button Visibility --- */
-@media (max-width: 768px) {
-  .container {
-    overflow-y: auto !important;
-    min-height: 100vh !important;
-    height: auto !important;
-  }
-  .game-area {
-    min-height: 0 !important;
-    height: auto !important;
-    padding-bottom: 60px !important; /* Space for button */
-  }
-  .game-grid {
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: 1 / 1 !important;
-    max-height: 60vw !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-  }
   .grid-cell {
     min-height: 0 !important;
     max-height: none !important;
     aspect-ratio: 1 / 1 !important;
   }
+  
+  .item-wrapper {
+    width: 35px !important; /* Smaller items */
+    height: 35px !important;
+  }
+  
+  h1 {
+    font-size: 20px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .game-instructions {
+    font-size: 13px !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .stats {
+    padding: 8px 0 !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .stats p {
+    font-size: 13px !important;
+  }
+  
+  /* Fixed start button at bottom */
   button#start-game {
     position: fixed !important;
     left: 50% !important;
-    bottom: 10px !important;
+    bottom: 15px !important;
     transform: translateX(-50%) !important;
-    z-index: 100 !important;
-    width: 90vw !important;
-    max-width: 350px !important;
+    z-index: 1000 !important;
+    width: 85vw !important;
+    max-width: 300px !important;
     margin: 0 !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    padding: 14px 20px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+    background-color: #4CAF50 !important;
+    border-radius: 25px !important;
+  }
+  
+  button#start-game:hover {
+    background-color: #45a049 !important;
   }
 }
 
-@media (max-width: 480px) {
-  .game-grid {
-    max-height: 55vw !important;
-  }
-  button#start-game {
-    font-size: 13px !important;
-    padding: 8px 0 !important;
-    max-width: 98vw !important;
-  }
-}
-
-/* Very small screens */
+/* Small screens */
 @media (max-width: 480px) {
   .container {
-    height: calc(100vh - 45px) !important;
+    padding-bottom: 90px !important;
+  }
+  
+  .game-grid {
+    width: 80vw !important; /* Even smaller on very small screens */
+    height: 80vw !important;
+    gap: 1vw !important;
+  }
+  
+  .item-wrapper {
+    width: 30px !important; /* Even smaller items */
+    height: 30px !important;
   }
   
   .left-panel {
-    margin-top: 50px !important;
-    padding: 4px !important;
+    padding: 6px !important;
   }
   
   .difficulty-btn {
-    width: 75px !important;
+    width: 70px !important;
     padding: 4px 6px !important;
     font-size: 9px !important;
   }
   
   .difficulty-selection h3 {
-    font-size: 11px !important;
-  }
-  
-  .game-grid {
-    width: 80vw !important;
-    height: 40vh !important;
+    font-size: 12px !important;
   }
   
   h1 {
@@ -464,14 +450,55 @@ button {
     margin-bottom: 8px !important;
   }
   
-  button {
-    margin: 8px auto 10px !important;
-    padding: 6px 12px !important;
+  .stats p {
     font-size: 11px !important;
   }
   
+  button#start-game {
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+    width: 90vw !important;
+    bottom: 10px !important;
+    z-index: 1001 !important;
+  }
+}
+
+/* Extra small screens - ensure button is always visible */
+@media (max-width: 360px) {
+  .container {
+    padding-bottom: 100px !important;
+  }
+  
+  .game-grid {
+    width: 85vw !important;
+    height: 85vw !important;
+    gap: 0.8vw !important;
+  }
+  
+  .item-wrapper {
+    width: 25px !important;
+    height: 25px !important;
+  }
+  
+  button#start-game {
+    font-size: 13px !important;
+    padding: 10px 12px !important;
+    width: 95vw !important;
+    bottom: 8px !important;
+    z-index: 1002 !important;
+    position: fixed !important;
+  }
+  
+  h1 {
+    font-size: 14px !important;
+  }
+  
+  .game-instructions {
+    font-size: 10px !important;
+  }
+  
   .stats p {
-    font-size: 11px !important;
+    font-size: 10px !important;
   }
 }
 
