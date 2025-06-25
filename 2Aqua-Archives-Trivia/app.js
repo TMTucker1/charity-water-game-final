@@ -259,7 +259,7 @@ class WaterCrisisTrivia {
     
     playWinSound() {
         try {
-            const winSound = new Audio('..assets/Sound/win.wav'); // Adjust path as needed
+            const winSound = new Audio('../assets/Sound/win.wav'); // Adjust path as needed
             winSound.volume = 1;
             winSound.play().catch(error => {
                 console.log('Error playing win sound, using fallback:', error);
@@ -528,6 +528,31 @@ class WaterCrisisTrivia {
                 closeButton.click();
             }
         };
+    }
+}   
+    resetGame() {
+// Initialize the game when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    new WaterCrisisTrivia();
+});     // Show mission button
+        this.missionButton.classList.remove('hidden');
+        
+        // Hide quiz container
+        this.quizContainer.classList.add('hidden');
+        
+        // Reset score and time
+        this.score = 0;
+        this.timeLeft = 30;
+        
+        // Update score display
+        this.updateScore();
+        
+        // Reset timer display
+        this.timerElement.textContent = this.timeLeft;
+        this.timerBar.style.width = '100%';
+        this.timerBar.classList.remove('timer-warning');
+        
+        console.log("Game reset - ready to play again");
     }
 }
 
