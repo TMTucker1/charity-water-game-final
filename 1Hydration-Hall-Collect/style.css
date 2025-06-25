@@ -288,8 +288,8 @@ button {
     align-items: stretch !important;
     padding: 0 2vw 100px 2vw !important; /* More bottom padding for button */
     gap: 0 !important;
-    min-height: 100vh !important;
-    height: auto !important;
+    min-height: 100dvh !important;
+    height: 100dvh !important;
     box-sizing: border-box !important;
     overflow: visible !important;
   }
